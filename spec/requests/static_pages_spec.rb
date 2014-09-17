@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "Static Pages" do
   let(:base_title) { 'Ruby on Rails Tutorial App' }
   describe "Home Pages" do
-    it "should have the content 'Sample App'" do
+    it "should have the conRtent 'Sample App'" do
       visit '/static_pages/home'
       expect(page).to have_content('Sample App')
     end
