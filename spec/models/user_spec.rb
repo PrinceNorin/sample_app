@@ -1,10 +1,7 @@
 require 'spec_helper'
 
 describe User do
-  before do 
-    @user = User.new(name: 'norin', email: 'norin@example.com',
-                     password: 'secret', password_confirmation: 'secret')
-  end
+  before { @user = FactoryGirl.build :user }
   subject { @user }
   
   it { should respond_to :name }
