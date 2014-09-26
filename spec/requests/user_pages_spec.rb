@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "UserPages" do
+describe "User Pages" do
   subject { page }
   
   describe "Signup Page" do
@@ -21,13 +21,25 @@ describe "UserPages" do
     end
     
     describe "with valid data" do
-      it "should create a user" do
+      before do
         fill_in 'Name', with: 'norin'
         fill_in 'Email', with: 'norin.hor@gmail.com'
         fill_in 'Password', with: 'secret'
         fill_in 'Password Confirmation', with: 'secret'
+      end
+      
+      it "should create a user" do
         expect { click_button submit }.to change(User, :count)
       end
+      
+      describe "after saving the user" do
+          before { click_button submit }
+          let(:user) { User.find_by_email 'norin.hor@gmail.com' }
+          
+          it { should have_link 'Sign out' }
+          it { should have_title user.name }
+          it { should have_selector 'div.alert.alert-success', text: 'Welcome' }
+        end
     end
   end
   
