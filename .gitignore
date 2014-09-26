@@ -17,3 +17,6 @@
 
 # Ignore secret key file
 .secret
+
+# Ignore zeus lock file
+.zeus.sock

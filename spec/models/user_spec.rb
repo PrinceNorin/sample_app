@@ -9,6 +9,7 @@ describe User do
   it { should respond_to :password }
   it { should respond_to :password_confirmation }
   it { should respond_to :password_digest }
+  it { should respond_to :remember_token }
   it { should respond_to :authenticate }
   it { should be_valid }
   
@@ -63,14 +64,14 @@ describe User do
   end
   
   describe "when email is mixcase" do
-    let(:mix_case_email) { 'NorIn@EXAmple.CoM' }
+    let(:mix_case_email) { 'norin@example.com' }
     
     it "should save as all downcase" do
-      @user.email = mix_case_email
+      @user.email = mix_case_email.upcase
       @user.save
       
-      expect(@user.reload.email).to_not eq mix_case_email
-      expect(@user.reload.email).to eq mix_case_email.downcase
+      expect(@user.reload.email).to_not eq(mix_case_email.upcase)
+      expect(@user.reload.email).to eq(mix_case_email.downcase)
     end
   end
   
@@ -111,5 +112,11 @@ describe User do
       it { should_not eq user_for_invalid_passowrd }
       specify { expect(user_for_invalid_passowrd).to be_false }
     end
+  end
+  
+  describe "remember token" do
+    before { @user.save }
+    
+    its(:remember_token) { should_not be_blank }
   end
 end
