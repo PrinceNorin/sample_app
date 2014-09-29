@@ -1,0 +1,22 @@
+<%= provide :title, 'Edit user' %>
+
+<h1>Update user profile</h1>
+
+<%= form_for @user do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+  
+  <%= f.label :email %>
+  <%= f.text_field :email %>
+  
+  <%= f.label :password %>
+  <%= f.password_field :password %>
+  
+  <%= f.label :password_confirmation, 'Confirm Password' %>
+  <%= f.password_field :password_confirmation %>
+  
+  <%= gravatar_for @user %>&nbsp;
+  <%= link_to 'Change', 'http://gravatar.com/emails' %>
+  
+  <%= f.submit 'Save changes', class: 'btn btn-large btn-primary' %>
+<% end %>
