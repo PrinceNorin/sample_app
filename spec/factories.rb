@@ -7,4 +7,9 @@ FactoryGirl.define do
     
     factory(:admin) { admin true }
   end
+  
+  factory :micropost do
+    content 'Lorem ipsum'
+    association :user
+  end
 end
