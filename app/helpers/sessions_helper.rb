@@ -38,4 +38,11 @@ module SessionsHelper
   def store_location
     session[:return_to] = request.url if request.get?
   end
+  
+  def signing_in
+    unless sign_in?
+      store_location
+      redirect_to signin_path, notice: 'You must sign in to continues'
+    end
+  end
 end

@@ -81,6 +81,21 @@ describe "Authentication Pages" do
             it { should have_title('Sign in') }
           end
         end
+        
+        describe "in microposts controller" do
+          describe "submitting to the microposts create action" do
+            before { post microposts_path }
+            
+            specify { expect(response).to redirect_to signin_path }
+          end
+          
+          describe "submitting to the microposts destroy action" do
+            let(:m) { FactoryGirl.create(:micropost) }
+            before { delete micropost_path(m) }
+            
+            specify { expect(response).to redirect_to signin_path }
+          end
+        end
       end
       
       describe "as wrong user" do
