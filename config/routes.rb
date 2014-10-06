@@ -15,6 +15,7 @@ SampleApp::Application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
   resources :microposts, only: [:create, :destroy]
   resources :relationships, only: [:create, :destroy]
+  resources :account_activations, only: [:edit]
   
   get "/signup", to: 'users#new', as: :signup
   get '/signin', to: 'sessions#new', as: :signin

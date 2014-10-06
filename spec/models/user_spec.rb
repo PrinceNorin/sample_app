@@ -10,6 +10,10 @@ describe User do
   it { should respond_to :password_confirmation }
   it { should respond_to :password_digest }
   it { should respond_to :remember_token }
+  it { should respond_to :activation_token }
+  it { should respond_to :activation_digest }
+  it { should respond_to :activated }
+  it { should respond_to :activated_at }
   it { should respond_to :authenticate }
   it { should respond_to :admin }
   it { should respond_to :microposts }
@@ -128,6 +132,15 @@ describe User do
     before { @user.save }
     
     its(:remember_token) { should_not be_blank }
+  end
+  
+  describe "activation digest" do
+    before { @user.save }
+    
+    its(:activated) { should eq false }
+    its(:activation_token) { should_not be_blank }
+    its(:activation_digest) { should_not be_blank }
+    its(:activation_digest) { should eq User.digest(@user.activation_token) }
   end
   
   describe "with admin attributes set to true" do

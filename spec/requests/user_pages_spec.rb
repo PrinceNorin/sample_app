@@ -33,13 +33,22 @@ describe "User Pages" do
       end
       
       describe "after saving the user" do
-          before { click_button submit }
-          let(:user) { User.find_by_email 'norin.hor@gmail.com' }
-          
-          it { should have_link 'Sign out' }
-          it { should have_title user.name }
-          it { should have_selector 'div.alert.alert-success', text: 'Welcome' }
+        before { click_button submit }
+        let(:user) { User.find_by_email 'norin.hor@gmail.com' }
+        
+        it { should have_title full_title '' }
+        specify { expect(user.activated).to eq false }
+        it { should have_selector 'div.alert.alert-info', text: 'Please check your email to activate your account.' }
+      end
+      
+      describe "after activated" do
+        let(:user) { User.find_by_email 'norin.hor@gmail.com' }
+        before do
+          click_button submit
+          visit edit_account_activation_url(id: user.activation_token, email: user.email)
         end
+        its(:activated) { should eq true }
+      end
     end
   end
   

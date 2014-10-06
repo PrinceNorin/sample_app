@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  attr_accessor :activation_token
+  
   has_many :microposts, dependent: :destroy
   has_many :relationships, foreign_key: :follower_id, dependent: :destroy
   has_many :followed_users, through: :relationships, source: :followed
@@ -8,6 +10,7 @@ class User < ActiveRecord::Base
   
   before_save { email.downcase! }
   before_create :create_remember_token
+  before_create :create_activation_digest
   
   validates :name, presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\Z/i
@@ -32,6 +35,10 @@ class User < ActiveRecord::Base
     relationships.find_by(followed_id: other_user.id).destroy
   end
   
+  def activation_token?(token)
+    self.activation_digest == User.digest(token)
+  end
+  
   def self.new_remember_token
     SecureRandom.urlsafe_base64
   end
@@ -44,5 +51,10 @@ class User < ActiveRecord::Base
     
     def create_remember_token
       self.remember_token = User.digest(User.new_remember_token)
+    end
+    
+    def create_activation_digest
+      self.activation_token = User.new_remember_token
+      self.activation_digest = User.digest(activation_token)
     end
 end
