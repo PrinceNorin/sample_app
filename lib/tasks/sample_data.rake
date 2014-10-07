@@ -11,7 +11,9 @@ namespace :db do
                  email: 'norin.hor@gmail.com',
                  password: 'secret',
                  password_confirmation: 'secret',
-                 admin: true)
+                 admin: true,
+                 activated: true,
+                 activated_at: Time.zone.now)
     
     99.times do |n|
       name = Faker::Name.name
@@ -20,7 +22,9 @@ namespace :db do
       User.create!(name: name,
                    email: email,
                    password: password,
-                   password_confirmation: password)
+                   password_confirmation: password,
+                   activated: true,
+                   activated_at: Time.zone.now)
     end
   end
   

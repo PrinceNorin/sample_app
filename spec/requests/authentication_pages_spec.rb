@@ -28,19 +28,31 @@ describe "Authentication Pages" do
     
     describe "with valid information" do
       let(:user) { FactoryGirl.create :user }
-      before { sign_in user }
       
-      it { should have_title user.name }
-      it { should have_link 'Users', href: users_path }
-      it { should have_link 'Profile', href: user_path(user) }
-      it { should have_link 'Settings', href: edit_user_path(user) }
-      it { should have_link 'Sign out', href: signout_path }
-      it { should_not have_link 'Sign in', href: signin_path }
-      
-      describe "followed by signout" do
-        before { click_link 'Sign out' }
+      describe "when account is activated" do
+        before do
+          visit edit_account_activation_url(user.activation_token, email: user.email)
+          sign_in user
+        end
         
-        it { should have_link 'Sign in' }
+        it { should have_title user.name }
+        it { should have_link 'Users', href: users_path }
+        it { should have_link 'Profile', href: user_path(user) }
+        it { should have_link 'Settings', href: edit_user_path(user) }
+        it { should have_link 'Sign out', href: signout_path }
+        it { should_not have_link 'Sign in', href: signin_path }
+        
+        describe "followed by signout" do
+          before { click_link 'Sign out' }
+          
+          it { should have_link 'Sign in' }
+        end
+      end
+      
+      describe "when account is not activated" do
+        before { sign_in user }
+        it { should have_title full_title '' }
+        it { should have_selector 'div.alert.alert-info' }
       end
     end
     

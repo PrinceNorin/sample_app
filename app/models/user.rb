@@ -35,7 +35,7 @@ class User < ActiveRecord::Base
     relationships.find_by(followed_id: other_user.id).destroy
   end
   
-  def activation_token?(token)
+  def has_activation_token?(token)
     self.activation_digest == User.digest(token)
   end
   

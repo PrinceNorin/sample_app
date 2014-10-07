@@ -42,12 +42,12 @@ describe "User Pages" do
       end
       
       describe "after activated" do
-        let(:user) { User.find_by_email 'norin.hor@gmail.com' }
+        let!(:user) { FactoryGirl.create :user }
+        
         before do
-          click_button submit
-          visit edit_account_activation_url(id: user.activation_token, email: user.email)
+          visit edit_account_activation_url(user.activation_token, email: user.email)
         end
-        its(:activated) { should eq true }
+        specify { expect(user.reload.activated?).to eq true }
       end
     end
   end
