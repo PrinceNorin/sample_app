@@ -4,10 +4,22 @@ describe "Authentication Pages" do
   subject { page }
   
   describe "signin page" do
-    before { visit signin_path }
+    describe "when user hasn't signed in yet" do
+      before { visit signin_path }
+      
+      it { should have_content 'Sign in' }
+      it { should have_title full_title 'Sign in' }
+    end
     
-    it { should have_content 'Sign in' }
-    it { should have_title full_title 'Sign in' }
+    describe "when user has signed in" do
+      before do
+        user = FactoryGirl.create :user
+        visit edit_account_activation_url(user.activation_token, email: user.email)
+        visit signin_path
+      end
+      
+      it { should_not have_title full_title 'Sign in' }
+    end
   end
   
   describe "signin" do

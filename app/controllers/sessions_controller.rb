@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  before_action :redirect_signed_in_user, only: [:new, :create]
+  
   def new
   end
   
@@ -20,4 +22,10 @@ class SessionsController < ApplicationController
     sign_out
     redirect_to root_path
   end
+  
+  private
+  
+    def redirect_signed_in_user
+      redirect_to root_path if sign_in?
+    end
 end
