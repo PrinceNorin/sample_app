@@ -10,16 +10,6 @@ describe "Authentication Pages" do
       it { should have_content 'Sign in' }
       it { should have_title full_title 'Sign in' }
     end
-    
-    describe "when user has signed in" do
-      before do
-        user = FactoryGirl.create :user
-        visit edit_account_activation_url(user.activation_token, email: user.email)
-        visit signin_path
-      end
-      
-      it { should_not have_title full_title 'Sign in' }
-    end
   end
   
   describe "signin" do
@@ -62,7 +52,11 @@ describe "Authentication Pages" do
       end
       
       describe "when account is not activated" do
-        before { sign_in user }
+        before do
+          user.update_attribute(:activated, false)
+          sign_in user
+        end
+        
         it { should have_title full_title '' }
         it { should have_selector 'div.alert.alert-info' }
       end

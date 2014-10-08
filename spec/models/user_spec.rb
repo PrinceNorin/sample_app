@@ -135,7 +135,10 @@ describe User do
   end
   
   describe "activation digest" do
-    before { @user.save }
+    before do
+      @user.activated = false
+      @user.save
+    end
     
     its(:activated) { should eq false }
     its(:activation_token) { should_not be_blank }
