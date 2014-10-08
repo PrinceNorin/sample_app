@@ -39,6 +39,14 @@ class User < ActiveRecord::Base
     self.activation_digest == User.digest(token)
   end
   
+  def has_reset_token?(token)
+    self.password_reset_token == token
+  end
+  
+  def password_expired?
+    self.password_reset_expired < Time.zone.now
+  end
+  
   def self.new_remember_token
     SecureRandom.urlsafe_base64
   end

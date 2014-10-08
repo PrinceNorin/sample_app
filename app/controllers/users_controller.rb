@@ -61,6 +61,19 @@ class UsersController < ApplicationController
     render 'show_follow'
   end
   
+  def new_password
+  end
+  
+  def reset_password
+    user = User.find_by_email(params[:email])
+    password_reset_token = User.new_remember_token
+    user.update_attribute(:password_reset_token, password_reset_token)
+    user.update_attribute(:password_reset_expired, 1.day.from_now)
+    UserMailer.reset_password(user).deliver
+    flash[:info] = 'Please click on the link in your email to reset password'
+    redirect_to root_path
+  end
+  
   private
     def user_param
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
@@ -75,4 +88,8 @@ class UsersController < ApplicationController
     def admin_user
       redirect_to root_path unless current_user.admin?
     end
+    
+    # def redirect_sign_in_user
+    #   redirect_to user_path(@user) if sign_in?
+    # end
 end

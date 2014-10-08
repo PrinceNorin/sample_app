@@ -9,6 +9,13 @@ describe "Authentication Pages" do
       
       it { should have_content 'Sign in' }
       it { should have_title full_title 'Sign in' }
+      it { should have_link 'Reset Password', href: new_password_users_path }
+      
+      describe "follow reset password link" do
+        before { click_link 'Reset Password' }
+        it { should have_content 'Reset Password' }
+        it { should have_title full_title 'Reset Password' }
+      end
     end
   end
   

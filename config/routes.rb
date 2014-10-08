@@ -10,12 +10,18 @@ SampleApp::Application.routes.draw do
     member do
       get 'following', 'followers'
     end
+    
+    collection do
+      get 'new_password', 'new_password'
+      post 'reset_password', 'reset_password'
+    end
   end
   
   resources :sessions, only: [:new, :create, :destroy]
   resources :microposts, only: [:create, :destroy]
   resources :relationships, only: [:create, :destroy]
   resources :account_activations, only: [:edit]
+  resources :password_resets, only: [:edit, :update]
   
   get "/signup", to: 'users#new', as: :signup
   get '/signin', to: 'sessions#new', as: :signin

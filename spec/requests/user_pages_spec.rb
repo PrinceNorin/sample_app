@@ -52,6 +52,22 @@ describe "User Pages" do
     end
   end
   
+  describe "reset password page" do
+    let(:user) { FactoryGirl.create :user, email: 'norin@example.com' }
+    let(:msg) { 'Please click on the link in your email to reset password' }
+    before do
+      visit new_password_users_path
+      fill_in 'Email', with: user.email
+      click_button 'Send Email'
+    end
+    
+    it { should have_title full_title '' }
+    it { should have_selector 'div.alert.alert-info', msg }
+    specify { expect(user.reload.password_reset_token).not_to be_nil }
+    specify { expect(user.reload.password_expired?).not_to be_nil }
+    specify { expect(user.reload.password_expired?).to eq false }
+  end
+  
   describe "profile page" do
     let(:user) { FactoryGirl.create :user }
     let!(:m1) { FactoryGirl.create(:micropost, user: user, content: 'Foo') }
