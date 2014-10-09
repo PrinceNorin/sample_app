@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   before_action :signing_in, only: [:index, :edit, :update, :following, :followers]
   before_action :correct_user, only: [:edit, :update]
   before_action :admin_user, only: :destroy
+  before_action :redirect_sign_in_user, only: [:new_password]
   
   def index
     @users = User.paginate(page: params[:page])
@@ -89,7 +90,7 @@ class UsersController < ApplicationController
       redirect_to root_path unless current_user.admin?
     end
     
-    # def redirect_sign_in_user
-    #   redirect_to user_path(@user) if sign_in?
-    # end
+    def redirect_sign_in_user
+      redirect_to edit_user_path(current_user) if sign_in?
+    end
 end

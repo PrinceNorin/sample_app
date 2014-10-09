@@ -70,6 +70,18 @@ describe "Authentication Pages" do
     end
     
     describe "authorization" do
+      describe "for signed-in users" do
+        let(:user) { FactoryGirl.create(:user) }
+        before { sign_in user }
+        
+        describe "in the Users controller" do
+          describe "visiting the new password page" do
+            before { visit new_password_users_path }
+            it { should have_title full_title 'Edit user' }
+          end
+        end
+      end
+      
       describe "for no-signed-in users" do
         let(:user) { FactoryGirl.create(:user) }
         
