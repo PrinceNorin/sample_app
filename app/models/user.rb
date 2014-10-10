@@ -47,6 +47,14 @@ class User < ActiveRecord::Base
     self.password_reset_expired < Time.zone.now
   end
   
+  def self.search(search, page)
+    if search
+      where("name LIKE ?", "%#{search}%").paginate(page: page)
+    else
+      paginate(page: page)
+    end
+  end
+  
   def self.new_remember_token
     SecureRandom.urlsafe_base64
   end

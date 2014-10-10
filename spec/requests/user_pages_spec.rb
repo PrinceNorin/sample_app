@@ -215,6 +215,17 @@ describe "User Pages" do
         end
       end
     end
+    
+    describe "search" do
+      let(:search_user_name) { User.first.name }
+      before do
+        fill_in 'search', with: search_user_name
+        click_button 'Search'
+      end
+      
+      it { should have_selector 'h1', text: 'Search users' }
+      it { should have_selector 'li', text: search_user_name }
+    end
   end
   
   describe "following/followers" do

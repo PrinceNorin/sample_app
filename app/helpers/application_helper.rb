@@ -7,4 +7,8 @@ module ApplicationHelper
       "#{base_title} | #{page_title}"
     end
   end
+  
+  def search_path
+    request.path == users_path ? users_path : root_path
+  end
 end

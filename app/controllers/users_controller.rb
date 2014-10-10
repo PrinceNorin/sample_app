@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   before_action :redirect_sign_in_user, only: [:new_password]
   
   def index
-    @users = User.paginate(page: params[:page])
+    @users = User.search(params[:search], params[:page])
   end
   
   def new
